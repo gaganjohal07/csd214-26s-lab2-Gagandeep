@@ -1,62 +1,43 @@
 package bookstore;
 
-import bookstore.pojos.*;
-import org.junit.jupiter.api.AfterEach;
+import bookstore.pojos.GamingMouse;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
-    private final InputStream originalSystemIn = System.in;
-
-    @AfterEach
-    void tearDown() {
-        System.setIn(originalSystemIn);
-    }
+public class AppTest {
 
     @Test
-    void testAppFlow_AddAndEditBook() {
-        // 1. Build the Clean Script
+    void testAppFlow_AddGamingMouse() {
+
         StringBuilder script = new StringBuilder();
 
-        // --- ADD BOOK ---
-        script.append("1\n");             // Main Menu: Add Items
-        script.append("1\n");             // Add Menu: Add Book
-        script.append("Dune\n");          // Title
-        script.append("Frank Herbert\n"); // Author
-        script.append("10\n");            // Copies
-        script.append("25.00\n");         // Price
-        script.append("99\n");            // Exit Add Menu
+        script.append("1\n"); // main menu -> Add Items
+        script.append("6\n"); // add Gaming Mouse
 
-        // --- EDIT BOOK ---
-        script.append("2\n");             // Main Menu: Edit Items
-        script.append("0\n");             // Select Index 0
-        script.append("Dune Messiah\n");  // Change Title
-        script.append("\n");              // Price: Keep
-        script.append("\n");              // Copies: Keep
-        script.append("\n");              // Author: Keep
+        script.append("Logitech\n"); // brand
+        script.append("1600\n"); // dpi
 
-        // --- QUIT ---
-        script.append("99\n");            // Quit
+        script.append("99\n"); // exit add menu
+        script.append("99\n"); // quit app
 
-        // 2. Inject
-        System.setIn(new ByteArrayInputStream(script.toString().getBytes()));
+        System.setIn(
+                new ByteArrayInputStream(
+                        script.toString().getBytes()
+                )
+        );
 
-        // 3. Run
-        App app = new App() {
-            @Override
-            public void populate() { /* clean start */ }
-        };
+        App app = new App();
+
         app.run();
 
-        // 4. Verify
-        Book expected = new Book("Frank Herbert", "Dune Messiah", 25.00, 10);
-        SaleableItem result = app.findItem(expected);
+        GamingMouse expectedMouse =
+                new GamingMouse("Logitech", 1600);
 
-        assertNotNull(result);
-        assertEquals("Dune Messiah", ((Book)result).getTitle());
+        assertNotNull(
+                app.findItem(expectedMouse)
+        );
     }
 }

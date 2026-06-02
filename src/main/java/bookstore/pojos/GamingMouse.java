@@ -53,4 +53,15 @@ public class GamingMouse extends GamingAccessory {
     public String toString() {
         return super.toString() + " DPI: " + dpi;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GamingMouse that)) return false;
+        return dpi == that.dpi && getBrand().equals(that.getBrand());
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getBrand(), dpi);
+    }
 }

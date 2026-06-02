@@ -58,4 +58,16 @@ public class GamingKeyboard extends GamingAccessory {
                 ", switchType='" + switchType + '\'' +
                 '}';
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GamingKeyboard that)) return false;
+        return getBrand().equals(that.getBrand())
+                && switchType.equals(that.switchType);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getBrand(), switchType);
+    }
 }
